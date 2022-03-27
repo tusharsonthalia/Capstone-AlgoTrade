@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+<div class="text-center text-white" style="min-height: 100vh;">
+    <div class="h1 pb-5">Welcome to AlgoTrade!</div>
+    <div>We try to assist you in making your investment decisions using State of the Art AI algorithms.</div>
+    <div class="pb-5">Feel free to browse through our collection of algorithms</div>
+    <div class="d-flex flex-column flex-lg-row justify-content-around">
+        <a class="btn btn-lg btn-primary mb-3" href="deep_learning" role="button">Deep Learning</a>
+        <a class="btn btn-lg btn-primary mb-3" href="reinforcement_learning" role="button">Reinforcement Learning</a>
+        <a class="btn btn-lg btn-primary mb-3" href="simulations" role="button">Simulations</a>
+    </div>
+</div>
+<!-- <form class="text-white text-left" method="post" action="/">
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="inputClass">Select a class of algorithms</label>
+            <select id="inputClass" name="classAlgo" class="form-control w-100" onchange="this.form.submit()">
+                <option value="null" class="text-muted"> Choose... </option>
+                {% for algo in algo_categories %}
+                    {% if default_class == algo %}
+                        <option value="{{algo}}" selected> {{ algo }} </option>
+                    {% else %}
+                        <option value="{{algo}}"> {{ algo }} </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="inputName">Select the name of algorithm</label>
+            <select id="inputName" name="nameAlgo" class="form-control w-100" onchange="this.form.submit()">
+                <option value="null" class="text-muted"> Choose... </option>
+                {% for name in names %}
+                    {% if default_name == name %}
+                        <option value="{{name}}" selected> {{ name }} </option>
+                    {% else %}
+                        <option value="{{name}}"> {{ name }} </option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Simulate</button>
+</form> -->
+{% endblock %}

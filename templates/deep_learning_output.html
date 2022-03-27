@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+<div class="text-center text-white">
+    You selected {{ algorithm }} for predicting {{ predict }} day(s) of stock price for {{ stock }}. The number of lag
+    days selected was: {{ lag }} day(s).
+    {% if retrain %}
+    <div>You retrained the model on past {{ train }} days.</div>
+    {% endif %}
+    <div class="my-3">The predictions made by the model are:</div>
+    <div class="col-md-6 mx-auto">
+        <table class="table table-hover table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Day</th>
+                    <th>Close Price</th>
+                </tr>
+            </thead>
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{ loop.index }} </td>
+                <td>{{ prediction }} </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
