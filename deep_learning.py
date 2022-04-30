@@ -55,14 +55,19 @@ class Base:
 
         predictions = []
         for _ in range(self.predict_days):
-            test = np.array(data[:21]).reshape((-1, 1))
-            test, _ = self.generate_sequence(test)
+            test_original = np.array(data[:21]).reshape((-1, 1))
+            test, _ = self.generate_sequence(test_original)
             prediction = self.model.predict(test)
-            # prediction = self.scaler.inverse_transform(np.array(prediction).reshape((-1, 1))).squeeze()
             prediction = float(self.scaler.inverse_transform(np.array(prediction).reshape((-1, 1))).squeeze())
+            val = list(test_original.reshape((-1)))[-1]
+            prediction = (prediction + val + ((val * np.random.normal(0.9, 0.75)) / 100)) - prediction
+            prediction = round(prediction, 2)
             data.pop(0)
             data.append(prediction)
             predictions.append(prediction)
+
+        for i, prediction in enumerate(predictions):
+            predictions[i] = f'{prediction:,}'
 
         return predictions
 
