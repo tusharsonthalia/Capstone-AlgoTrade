@@ -1,16 +1,20 @@
+from operator import mod
 import os
 import json
+import re
 import pandas as pd
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
+from requests import RequestException
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
 from deep_learning import DeepLearner
+from reinforcement_learning import ReinforcementLearner
 
 with open('config.json') as f:
     config = json.load(f)
@@ -89,6 +93,39 @@ def deep_learning():
                                 stock=stock, train=train, predict=predict, lag=lag,
                                 predictions=predictions, retrain=False)
 
+@app.route("/reinforcement_learning", methods=['GET', 'POST'])
+@login_required
+def reinforcement_learning():
+    if request.method == "GET":
+        algorithms = config['Reinforcement Learning']
+        stocks = pd.read_csv("data/stock_list.csv")['Symbol'].tolist()
+
+        return render_template("reinforcement_learning.html", algorithms=algorithms, stocks=stocks)
+    
+    else: 
+        algorithm = request.form.get('nameAlgo')
+        stock = request.form.get('nameStock')
+        start_date = request.form.get('startDate')
+        end_date = request.form.get('endDate')
+        window_size = int(request.form.get('windowSize'))
+        initial_money = int(request.form.get('initialMoney'))
+        print(algorithm, stock, start_date, end_date, window_size, initial_money)
+        
+        rl_object = ReinforcementLearner(
+            stock=stock,
+            start_date=start_date,
+            end_date=end_date,
+            window_size=window_size,
+            initial_money=initial_money,
+            model_name=algorithm
+        )
+
+        text, graph = rl_object.get_graph_and_text()
+        
+        return render_template("reinforcement_learning_output.html",
+                                info=text[0], variables=text[1],
+                                performance=text[2], recommendation=text[3], 
+                                graph=graph)
 
 
 
@@ -202,4 +239,4 @@ def errorhandler(e):
 for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
 
-app.run(debug=True)
+app.run(debug=False)
