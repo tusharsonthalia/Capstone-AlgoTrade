@@ -18,8 +18,6 @@
     "Simulations": [
         "Dynamic volatility Monte Carlo",
         "Drift Monte Carlo",
-        "Multivariate Drift Monte Carlo",
-        "Portfolio optimization",
         "Simple Monte Carlo"
     ]
 }

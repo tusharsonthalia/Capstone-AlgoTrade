@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Deep Learning
+{% endblock %}
+
+{% block main %}
+<form class="text-white text-left" method="post" action="/simulation">
+    <div class="form-row">
+        <div class="form-group col-12 col-md-6">
+            <label for="nameAlgo">Select the algorithm</label>
+            <select id="nameAlgo" name="nameAlgo" class="form-control w-100">
+                <option value="null" class="text-muted"> Choose... </option>
+                {% for algo in algorithms %}
+                <option value="{{algo}}"> {{ algo }} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group col-12 col-md-6">
+            <label for="nameStock">Select the stock</label>
+            <select id="nameStock" name="nameStock" class="form-control w-100">
+                <option value="null" class="text-muted"> Choose... </option>
+                {% for stock in stocks %}
+                <option value="{{stock}}"> {{ stock }} </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <div>
+                <label for="numberSimulation">Number of Simulations to run</label>
+            </div>
+            <input type="text" class="form-control" name="numberSimulation" placeholder="50" value="50" required>
+            <label for="numberSimulation" class="text-warning font-italic">(valid range 10-100)</label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <div>
+                <label for="predictDays">Number of days to be predicted on</label>
+            </div>
+            <input type="text" class="form-control" name="predictDays" placeholder="10" value="10" required>
+            <label for="predictDays" class="text-warning font-italic">(valid range 5-30)</label>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Predict</button>
+</form>
+{% endblock %}

@@ -1,4 +1,3 @@
-from operator import mod
 import os
 import json
 import re
@@ -15,10 +14,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import apology, login_required, lookup, usd
 from deep_learning import DeepLearner
 from reinforcement_learning import ReinforcementLearner
+from simulations import Simulator
 
 with open('config.json') as f:
     config = json.load(f)
-
 
 # Configure application
 app = Flask(__name__)
@@ -109,7 +108,6 @@ def reinforcement_learning():
         end_date = request.form.get('endDate')
         window_size = int(request.form.get('windowSize'))
         initial_money = int(request.form.get('initialMoney'))
-        print(algorithm, stock, start_date, end_date, window_size, initial_money)
         
         rl_object = ReinforcementLearner(
             stock=stock,
@@ -126,6 +124,34 @@ def reinforcement_learning():
                                 info=text[0], variables=text[1],
                                 performance=text[2], recommendation=text[3], 
                                 graph=graph)
+
+@app.route("/simulation", methods=['GET', 'POST'])
+@login_required
+def simulation():
+    if request.method == "GET":
+        algorithms = config['Simulations']
+        stocks = pd.read_csv("data/stock_list.csv")['Symbol'].tolist()
+
+        return render_template("simulation.html", algorithms=algorithms, stocks=stocks)
+    
+    else: 
+        algorithm = request.form.get('nameAlgo')
+        stock = request.form.get('nameStock')
+        number_simulation = int(request.form.get('numberSimulation'))
+        predict_days = int(request.form.get('predictDays'))
+        
+        simulator = Simulator(
+            stock=stock,
+            simulation_name=algorithm,
+            number_simulation=number_simulation,
+            predict_days=predict_days
+        )
+
+        graph, text = simulator.perform_simulation()
+        
+        return render_template("simulation_output.html",
+                                info=text[0], variables=text[1],
+                                performance=text[2], graph=graph)
 
 
 

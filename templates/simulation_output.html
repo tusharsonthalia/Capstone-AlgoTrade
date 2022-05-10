@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block main %}
+<div class="text-center text-white">
+    <p>{{ info }}</p>
+    <div>{{ variables }}</div>
+    <div class="my-3">{{ performance }}</div>
+    <div class="col-12">
+        <img src="{{ graph }}" alt="Simulations">
+    </div>
+</div>
+
+{% endblock %}
